@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type Piece = {
   left: number;
@@ -10,7 +10,7 @@ type Piece = {
 
 /**
  * Softly rising hearts that drift up the whole page behind the content.
- * Purely decorative and pointer-events-none.
+ * Rendered client-only (random positions) to avoid SSR hydration mismatch.
  */
 export function FloatingHearts({
   count = 14,
@@ -19,6 +19,9 @@ export function FloatingHearts({
   count?: number;
   className?: string;
 }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   const pieces = useMemo<Piece[]>(
     () =>
       Array.from({ length: count }, () => ({
@@ -30,6 +33,8 @@ export function FloatingHearts({
       })),
     [count],
   );
+
+  if (!mounted) return null;
 
   return (
     <div

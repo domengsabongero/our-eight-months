@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type Dot = {
   left: number;
@@ -10,9 +10,12 @@ type Dot = {
 
 /**
  * Soft glowing particles that gently twinkle in place.
- * Decorative background layer.
+ * Rendered client-only (random positions) to avoid SSR hydration mismatch.
  */
 export function Particles({ count = 30 }: { count?: number }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   const dots = useMemo<Dot[]>(
     () =>
       Array.from({ length: count }, () => ({
@@ -24,6 +27,8 @@ export function Particles({ count = 30 }: { count?: number }) {
       })),
     [count],
   );
+
+  if (!mounted) return null;
 
   return (
     <div aria-hidden className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
