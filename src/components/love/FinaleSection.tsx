@@ -61,10 +61,16 @@ export function FinaleSection() {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: false, amount: 0.5 });
   const firedRef = useRef(false);
-  const [elapsed, setElapsed] = useState<Elapsed>(() => getElapsed(START, new Date()));
+  const [elapsed, setElapsed] = useState<Elapsed>({
+    months: 0,
+    days: 0,
+    hours: 0,
+    minutes: 0,
+  });
   const [pulse, setPulse] = useState(false);
 
   useEffect(() => {
+    setElapsed(getElapsed(START, new Date()));
     const id = setInterval(() => setElapsed(getElapsed(START, new Date())), 1000);
     return () => clearInterval(id);
   }, []);
