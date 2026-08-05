@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedStoryRouteImport } from './routes/_authenticated/story'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -28,6 +29,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedStoryRoute = AuthenticatedStoryRouteImport.update({
+  id: '/story',
+  path: '/story',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedHomeRoute = AuthenticatedHomeRouteImport.update({
   id: '/home',
   path: '/home',
@@ -38,11 +44,13 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/home': typeof AuthenticatedHomeRoute
+  '/story': typeof AuthenticatedStoryRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/home': typeof AuthenticatedHomeRoute
+  '/story': typeof AuthenticatedStoryRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -50,18 +58,20 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/home': typeof AuthenticatedHomeRoute
+  '/_authenticated/story': typeof AuthenticatedStoryRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/sitemap.xml' | '/home'
+  fullPaths: '/' | '/sitemap.xml' | '/home' | '/story'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sitemap.xml' | '/home'
+  to: '/' | '/sitemap.xml' | '/home' | '/story'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/sitemap.xml'
     | '/_authenticated/home'
+    | '/_authenticated/story'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -93,6 +103,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/story': {
+      id: '/_authenticated/story'
+      path: '/story'
+      fullPath: '/story'
+      preLoaderRoute: typeof AuthenticatedStoryRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/home': {
       id: '/_authenticated/home'
       path: '/home'
@@ -105,10 +122,12 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
+  AuthenticatedStoryRoute: typeof AuthenticatedStoryRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
+  AuthenticatedStoryRoute: AuthenticatedStoryRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
