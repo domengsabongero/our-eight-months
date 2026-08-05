@@ -15,6 +15,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedTimelineRouteImport } from './routes/_authenticated/timeline'
 import { Route as AuthenticatedStoryRouteImport } from './routes/_authenticated/story'
 import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated/search'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedPlansRouteImport } from './routes/_authenticated/plans'
 import { Route as AuthenticatedPetsRouteImport } from './routes/_authenticated/pets'
 import { Route as AuthenticatedLettersRouteImport } from './routes/_authenticated/letters'
@@ -51,6 +52,11 @@ const AuthenticatedStoryRoute = AuthenticatedStoryRouteImport.update({
 const AuthenticatedSearchRoute = AuthenticatedSearchRouteImport.update({
   id: '/search',
   path: '/search',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedPlansRoute = AuthenticatedPlansRouteImport.update({
@@ -105,6 +111,7 @@ export interface FileRoutesByFullPath {
   '/letters': typeof AuthenticatedLettersRoute
   '/pets': typeof AuthenticatedPetsRoute
   '/plans': typeof AuthenticatedPlansRoute
+  '/profile': typeof AuthenticatedProfileRoute
   '/search': typeof AuthenticatedSearchRoute
   '/story': typeof AuthenticatedStoryRoute
   '/timeline': typeof AuthenticatedTimelineRoute
@@ -120,6 +127,7 @@ export interface FileRoutesByTo {
   '/letters': typeof AuthenticatedLettersRoute
   '/pets': typeof AuthenticatedPetsRoute
   '/plans': typeof AuthenticatedPlansRoute
+  '/profile': typeof AuthenticatedProfileRoute
   '/search': typeof AuthenticatedSearchRoute
   '/story': typeof AuthenticatedStoryRoute
   '/timeline': typeof AuthenticatedTimelineRoute
@@ -137,6 +145,7 @@ export interface FileRoutesById {
   '/_authenticated/letters': typeof AuthenticatedLettersRoute
   '/_authenticated/pets': typeof AuthenticatedPetsRoute
   '/_authenticated/plans': typeof AuthenticatedPlansRoute
+  '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/search': typeof AuthenticatedSearchRoute
   '/_authenticated/story': typeof AuthenticatedStoryRoute
   '/_authenticated/timeline': typeof AuthenticatedTimelineRoute
@@ -154,6 +163,7 @@ export interface FileRouteTypes {
     | '/letters'
     | '/pets'
     | '/plans'
+    | '/profile'
     | '/search'
     | '/story'
     | '/timeline'
@@ -169,6 +179,7 @@ export interface FileRouteTypes {
     | '/letters'
     | '/pets'
     | '/plans'
+    | '/profile'
     | '/search'
     | '/story'
     | '/timeline'
@@ -185,6 +196,7 @@ export interface FileRouteTypes {
     | '/_authenticated/letters'
     | '/_authenticated/pets'
     | '/_authenticated/plans'
+    | '/_authenticated/profile'
     | '/_authenticated/search'
     | '/_authenticated/story'
     | '/_authenticated/timeline'
@@ -238,6 +250,13 @@ declare module '@tanstack/react-router' {
       path: '/search'
       fullPath: '/search'
       preLoaderRoute: typeof AuthenticatedSearchRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/plans': {
@@ -308,6 +327,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedLettersRoute: typeof AuthenticatedLettersRoute
   AuthenticatedPetsRoute: typeof AuthenticatedPetsRoute
   AuthenticatedPlansRoute: typeof AuthenticatedPlansRoute
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedSearchRoute: typeof AuthenticatedSearchRoute
   AuthenticatedStoryRoute: typeof AuthenticatedStoryRoute
   AuthenticatedTimelineRoute: typeof AuthenticatedTimelineRoute
@@ -322,6 +342,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedLettersRoute: AuthenticatedLettersRoute,
   AuthenticatedPetsRoute: AuthenticatedPetsRoute,
   AuthenticatedPlansRoute: AuthenticatedPlansRoute,
+  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedSearchRoute: AuthenticatedSearchRoute,
   AuthenticatedStoryRoute: AuthenticatedStoryRoute,
   AuthenticatedTimelineRoute: AuthenticatedTimelineRoute,
