@@ -106,12 +106,17 @@ export const updateGalleryItem = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => updateSchema.parse(input))
   .handler(async ({ data, context }) => {
-    const patch: Record<string, unknown> = {};
+    const patch: {
+      caption?: string | null;
+      taken_at?: string | null;
+      is_favorite?: boolean;
+      is_archived?: boolean;
+    } = {};
     if (data.caption !== undefined)
-      patch['caption'] = data.caption?.trim() ? data.caption.trim() : null;
-    if (data.takenAt !== undefined) patch['taken_at'] = data.takenAt || null;
-    if (data.isFavorite !== undefined) patch['is_favorite'] = data.isFavorite;
-    if (data.isArchived !== undefined) patch['is_archived'] = data.isArchived;
+      patch.caption = data.caption?.trim() ? data.caption.trim() : null;
+    if (data.takenAt !== undefined) patch.taken_at = data.takenAt || null;
+    if (data.isFavorite !== undefined) patch.is_favorite = data.isFavorite;
+    if (data.isArchived !== undefined) patch.is_archived = data.isArchived;
 
     const { error } = await context.supabase
       .from("gallery_items")
