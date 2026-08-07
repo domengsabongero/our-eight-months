@@ -25,6 +25,12 @@ export function DatesSection() {
             eyebrow="Every meal, better together"
             message="Every meal becomes unforgettable because I'm sharing it with you."
           />
+          <StoryBlock
+            src={STORY_PHOTOS.sachi}
+            alt="The day you first met Sachi"
+            eyebrow="The day you met Sachi"
+            message="Watching you meet Sachi for the first time felt like watching my two worlds finally become one."
+          />
         </div>
       </div>
     </section>
