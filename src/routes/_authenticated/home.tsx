@@ -29,7 +29,7 @@ export const Route = createFileRoute("/_authenticated/home")({
   component: HomePage,
 });
 
-const ANNIVERSARY = new Date("2025-11-07T00:00:00");
+const ANNIVERSARY = new Date("2025-11-08T00:00:00");
 
 function HomePage() {
   const fetchKeepsake = useServerFn(getKeepsake);
@@ -54,7 +54,7 @@ function HomePage() {
         {[
           { label: "Days together", value: days > 0 ? days : 0 },
           { label: "Months", value: Math.max(0, Math.floor(days / 30.44)) },
-          { label: "Keepsake since", value: "07.11.25" },
+          { label: "Keepsake since", value: "08.11.25" },
         ].map((stat, i) => (
           <FadeUp key={stat.label} delay={i * 0.06}>
             <div className="glass-card rounded-[1.75rem] px-6 py-7 text-center">

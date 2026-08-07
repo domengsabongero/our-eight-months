@@ -1,6 +1,7 @@
 import { FadeUp } from "./FadeUp";
 import { ParallaxPhoto } from "./ParallaxPhoto";
 import { SectionHeading } from "./SectionHeading";
+import { STORY_PHOTOS } from "@/lib/story-photos";
 
 function JourneyBlock({
   src,
@@ -49,7 +50,7 @@ export function JourneySection() {
 
         <div className="mt-20 space-y-24 sm:mt-24 sm:space-y-32">
           <JourneyBlock
-            src="/images/10_FirstEverOuting.jpg"
+            src={STORY_PHOTOS.firstOuting}
             alt="Our first ever outing"
             title="Where It All Started"
             lines={[
@@ -59,7 +60,7 @@ export function JourneySection() {
           />
           <JourneyBlock
             reverse
-            src="/images/9_MostRecent_Outing.jpg"
+            src={STORY_PHOTOS.recentOuting}
             alt="Our most recent outing"
             title="And We're Still Making Memories"
             lines={[
