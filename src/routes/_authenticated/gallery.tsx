@@ -64,7 +64,13 @@ function Page() {
   };
 
   const mutateItem = useMutation({
-    mutationFn: (input: Parameters<typeof update>[0]["data"]) => update({ data: input }),
+    mutationFn: (input: {
+      id: string;
+      caption?: string | null;
+      takenAt?: string | null;
+      isFavorite?: boolean;
+      isArchived?: boolean;
+    }) => update({ data: input }),
     onSuccess: invalidate,
     onError: (error: Error) => toast.error(error.message),
   });
@@ -146,21 +152,6 @@ function Page() {
               mutateItem.mutate({ id: photo.id, isFavorite: !photo.is_favorite })
             }
           />
-          <div className="mt-2 flex flex-wrap gap-2">
-            {photos.map((photo) => (
-              <button
-                key={photo.id}
-                type="button"
-                onClick={() => {
-                  setEditing(photo);
-                  setCaption(photo.caption ?? "");
-                  setTakenAt(photo.taken_at ?? "");
-                }}
-                className="hidden"
-                aria-hidden
-              />
-            ))}
-          </div>
         </>
       )}
 
