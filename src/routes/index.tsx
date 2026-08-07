@@ -83,7 +83,7 @@ function AuthLanding() {
         className="glass-card w-full max-w-md rounded-[2rem] px-7 py-10 sm:px-10"
       >
         <p className="text-center text-[0.65rem] font-medium uppercase tracking-[0.45em] text-rosegold">
-          Est. 07.11.2025
+          Est. 08.11.2025
         </p>
         <h1 className="text-gradient-rose mt-3 text-center font-serif text-4xl font-medium sm:text-5xl">
           The Keepsake

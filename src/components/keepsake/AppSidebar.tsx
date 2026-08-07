@@ -17,7 +17,7 @@ export function AppSidebar({
     <aside className="glass-card sticky top-0 hidden h-screen w-64 shrink-0 flex-col rounded-none border-y-0 border-l-0 px-4 py-6 md:flex">
       <Link to="/home" className="px-3">
         <p className="text-[0.65rem] uppercase tracking-[0.35em] text-rosegold">
-          Est. 07.11.2025
+          Est. 08.11.2025
         </p>
         <h2 className="text-gradient-rose mt-1 font-serif text-2xl font-medium">
           The Keepsake
