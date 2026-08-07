@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import confetti from "canvas-confetti";
+import { STORY_PHOTOS } from "@/lib/story-photos";
 
-const COVER = "/images/1_CoverPhoto.png";
+const COVER = STORY_PHOTOS.cover;
 // The day it all began — eight months before the monthsary.
-const START = new Date("2025-11-07T00:00:00");
+const START = new Date("2025-11-08T00:00:00");
 
 type Elapsed = { months: number; days: number; hours: number; minutes: number };
 

@@ -7,6 +7,7 @@ import { FadeUp } from "@/components/love/FadeUp";
 import { PageShell } from "@/components/keepsake/PageShell";
 import { NAV_ITEMS } from "@/components/keepsake/nav-items";
 import { getKeepsake } from "@/lib/keepsake.functions";
+import { listGallery } from "@/lib/gallery.functions";
 
 export const Route = createFileRoute("/_authenticated/home")({
   head: () => ({
@@ -29,7 +30,7 @@ export const Route = createFileRoute("/_authenticated/home")({
   component: HomePage,
 });
 
-const ANNIVERSARY = new Date("2025-11-07T00:00:00");
+const ANNIVERSARY = new Date("2025-11-08T00:00:00");
 
 function HomePage() {
   const fetchKeepsake = useServerFn(getKeepsake);
@@ -37,6 +38,13 @@ function HomePage() {
     queryKey: ["keepsake"],
     queryFn: () => fetchKeepsake(),
   });
+
+  const fetchGallery = useServerFn(listGallery);
+  const { data: photos } = useQuery({
+    queryKey: ["gallery", "active"],
+    queryFn: () => fetchGallery({ data: { archived: false } }),
+  });
+  const recent = (photos ?? []).slice(0, 4);
 
   const days = differenceInCalendarDays(new Date(), ANNIVERSARY);
   const name = data?.me?.display_name ?? "my love";
@@ -54,7 +62,7 @@ function HomePage() {
         {[
           { label: "Days together", value: days > 0 ? days : 0 },
           { label: "Months", value: Math.max(0, Math.floor(days / 30.44)) },
-          { label: "Keepsake since", value: "07.11.25" },
+          { label: "Keepsake since", value: "08.11.25" },
         ].map((stat, i) => (
           <FadeUp key={stat.label} delay={i * 0.06}>
             <div className="glass-card rounded-[1.75rem] px-6 py-7 text-center">
@@ -79,10 +87,30 @@ function HomePage() {
               <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/70">
                 <item.icon className="h-5 w-5 text-rosegold" />
               </span>
-              <span>
+              <span className="min-w-0 flex-1">
                 <span className="block font-serif text-lg text-ink">{item.label}</span>
-                <span className="block text-xs text-muted-foreground">Open</span>
+                <span className="block text-xs text-muted-foreground">
+                  {item.to === "/gallery" && photos
+                    ? photos.length === 0
+                      ? "No photos yet"
+                      : `${photos.length} photo${photos.length > 1 ? "s" : ""}`
+                    : "Open"}
+                </span>
               </span>
+              {item.to === "/gallery" && recent.length > 0 && (
+                <span className="flex shrink-0 -space-x-2">
+                  {recent.map((photo) =>
+                    photo.url ? (
+                      <img
+                        key={photo.id}
+                        src={photo.url}
+                        alt=""
+                        className="h-9 w-9 rounded-full border-2 border-white/80 object-cover"
+                      />
+                    ) : null,
+                  )}
+                </span>
+              )}
             </Link>
           </FadeUp>
         ))}

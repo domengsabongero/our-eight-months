@@ -1,5 +1,6 @@
 import { SectionHeading } from "./SectionHeading";
 import { StoryBlock } from "./StoryBlock";
+import { STORY_PHOTOS } from "@/lib/story-photos";
 
 export function MomentsSection() {
   return (
@@ -9,13 +10,13 @@ export function MomentsSection() {
 
         <div className="mt-20 space-y-24 sm:mt-24 sm:space-y-32">
           <StoryBlock
-            src="/images/2_CuteSelfie.jpg"
+            src={STORY_PHOTOS.selfie1}
             alt="A candid, happy selfie of us"
             message="Every day with you reminds me that happiness isn't found in places — it's found in the person beside you."
           />
           <StoryBlock
             reverse
-            src="/images/3_CuteSelfie.jpg"
+            src={STORY_PHOTOS.selfie2}
             alt="Maxine smiling"
             message="Your smile has become my favorite view."
           />

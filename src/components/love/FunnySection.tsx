@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { FadeUp } from "./FadeUp";
 import { ParallaxPhoto } from "./ParallaxPhoto";
 import { SectionHeading } from "./SectionHeading";
+import { STORY_PHOTOS } from "@/lib/story-photos";
 
 const EMOJIS = ["😂", "😜", "🤪", "😆", "🥲", "😍", "🤭", "✨"];
 
@@ -73,13 +74,13 @@ export function FunnySection() {
 
         <div className="mt-20 grid gap-14 sm:mt-24 sm:grid-cols-2 sm:gap-10">
           <PlayfulCard
-            src="/images/7_FunnyAndCandid_MaxineOnPole.jpg"
+            src={STORY_PHOTOS.pole}
             alt="A funny candid of Maxine"
             caption="You'll probably laugh when you see this again."
             emoji="😂"
           />
           <PlayfulCard
-            src="/images/8_FunnyAndCandid_BruceCloseUp_With_Goggles.jpg"
+            src={STORY_PHOTOS.goggles}
             alt="Bruce being goofy with goggles"
             caption="Thank you for loving every version of me… even this one."
             emoji="🤪"

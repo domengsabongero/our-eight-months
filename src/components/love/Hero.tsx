@@ -1,7 +1,8 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { STORY_PHOTOS } from "@/lib/story-photos";
 
-const COVER = "/images/1_CoverPhoto.png";
+const COVER = STORY_PHOTOS.cover;
 
 export function Hero({ onBegin }: { onBegin: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
