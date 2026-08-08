@@ -49,6 +49,13 @@ function HomePage() {
   });
   const recent = (photos ?? []).slice(0, 4);
 
+  const fetchLetters = useServerFn(getLettersSummary);
+  const { data: letters } = useQuery({
+    queryKey: ["letters", "summary"],
+    queryFn: () => fetchLetters(),
+  });
+  const navigate = useNavigate();
+
   const days = differenceInCalendarDays(new Date(), ANNIVERSARY);
   const name = data?.me?.display_name ?? "my love";
   const shortcuts = NAV_ITEMS.filter((i) =>
