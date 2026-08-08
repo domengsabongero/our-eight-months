@@ -1,13 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { differenceInCalendarDays } from "date-fns";
+import { Mail, PenLine } from "lucide-react";
 
 import { FadeUp } from "@/components/love/FadeUp";
 import { PageShell } from "@/components/keepsake/PageShell";
 import { NAV_ITEMS } from "@/components/keepsake/nav-items";
+import { Button } from "@/components/ui/button";
 import { getKeepsake } from "@/lib/keepsake.functions";
 import { listGallery } from "@/lib/gallery.functions";
+import { getLettersSummary } from "@/lib/letters.functions";
 
 export const Route = createFileRoute("/_authenticated/home")({
   head: () => ({
@@ -46,6 +49,13 @@ function HomePage() {
   });
   const recent = (photos ?? []).slice(0, 4);
 
+  const fetchLetters = useServerFn(getLettersSummary);
+  const { data: letters } = useQuery({
+    queryKey: ["letters", "summary"],
+    queryFn: () => fetchLetters(),
+  });
+  const navigate = useNavigate();
+
   const days = differenceInCalendarDays(new Date(), ANNIVERSARY);
   const name = data?.me?.display_name ?? "my love";
   const shortcuts = NAV_ITEMS.filter((i) =>
@@ -76,6 +86,83 @@ function HomePage() {
           </FadeUp>
         ))}
       </div>
+
+      <FadeUp delay={0.1}>
+        <section className="glass-card mt-10 rounded-[1.75rem] px-6 py-7">
+          <div className="flex flex-wrap items-center gap-4">
+            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white/70">
+              <Mail className="h-5 w-5 text-rosegold" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <h2 className="font-serif text-xl text-ink">Letters</h2>
+              <p className="text-xs text-muted-foreground">
+                {letters
+                  ? letters.unread > 0
+                    ? `${letters.unread} unread letter${letters.unread > 1 ? "s" : ""} waiting for you`
+                    : "Nothing unread — a good time to write one"
+                  : "Loading"}
+              </p>
+            </div>
+            <Button
+              onClick={() => navigate({ to: "/letters" })}
+              className="rounded-full bg-rosegold text-cream hover:bg-rosegold/90"
+            >
+              <PenLine className="mr-2 h-4 w-4" />
+              Write a letter
+            </Button>
+          </div>
+
+          {letters && (
+            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+              {[
+                letters.latestReceived && {
+                  key: "received",
+                  label: `From ${letters.latestReceived.author_name ?? "your love"}`,
+                  title: letters.latestReceived.title,
+                  note: letters.latestReceived.preview,
+                },
+                letters.latestSent && {
+                  key: "sent",
+                  label: `To ${letters.latestSent.recipient_name ?? "your love"}`,
+                  title: letters.latestSent.title,
+                  note: letters.latestSent.read_at ? "Opened" : "Not opened yet",
+                },
+                letters.nextScheduled && {
+                  key: "scheduled",
+                  label: "Arriving later",
+                  title: letters.nextScheduled.title,
+                  note: letters.nextScheduled.scheduled_for
+                    ? new Date(letters.nextScheduled.scheduled_for).toLocaleString(
+                        undefined,
+                        { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" },
+                      )
+                    : "",
+                },
+              ]
+                .filter(Boolean)
+                .map((card) => (
+                  <Link
+                    key={card!.key}
+                    to="/letters"
+                    className="rounded-[1.25rem] bg-white/55 px-4 py-4 transition-colors hover:bg-white/80"
+                  >
+                    <p className="text-[0.6rem] uppercase tracking-[0.25em] text-rosegold">
+                      {card!.label}
+                    </p>
+                    <p className="mt-1.5 truncate font-serif text-base text-ink">
+                      {card!.title}
+                    </p>
+                    <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">
+                      {card!.note}
+                    </p>
+                  </Link>
+                ))}
+            </div>
+          )}
+        </section>
+      </FadeUp>
+
+
 
       <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {shortcuts.map((item, i) => (

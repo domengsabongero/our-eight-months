@@ -176,3 +176,40 @@
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.08); }
 }
+
+/* Letter bodies: the small set of formats the letter editor can produce. */
+.letter-prose {
+  & p { margin: 0 0 0.9em; }
+  & p:last-child { margin-bottom: 0; }
+  & h2 {
+    font-family: var(--font-serif, inherit);
+    font-size: 1.35em;
+    font-weight: 500;
+    margin: 1.4em 0 0.5em;
+    color: var(--ink);
+  }
+  & h3 {
+    font-size: 1.15em;
+    font-weight: 500;
+    margin: 1.2em 0 0.4em;
+    color: var(--ink);
+  }
+  & strong, & b { font-weight: 600; }
+  & em, & i { font-style: italic; }
+  & ul, & ol { margin: 0 0 1em 1.25em; }
+  & ul { list-style: disc; }
+  & ol { list-style: decimal; }
+  & li { margin: 0.25em 0; }
+  & blockquote {
+    margin: 1.2em 0;
+    padding-left: 1.1em;
+    border-left: 2px solid color-mix(in oklab, var(--rosegold) 60%, transparent);
+    font-style: italic;
+    color: color-mix(in oklab, var(--ink) 80%, transparent);
+  }
+  & a {
+    color: var(--rosegold);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}

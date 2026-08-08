@@ -108,15 +108,95 @@ export type Database = {
           },
         ]
       }
+      letter_attachments: {
+        Row: {
+          author_id: string
+          caption: string | null
+          created_at: string
+          id: string
+          letter_id: string
+          storage_path: string
+          updated_at: string
+        }
+        Insert: {
+          author_id: string
+          caption?: string | null
+          created_at?: string
+          id?: string
+          letter_id: string
+          storage_path: string
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string
+          caption?: string | null
+          created_at?: string
+          id?: string
+          letter_id?: string
+          storage_path?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "letter_attachments_letter_id_fkey"
+            columns: ["letter_id"]
+            isOneToOne: false
+            referencedRelation: "letters"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      letter_states: {
+        Row: {
+          archived_at: string | null
+          created_at: string
+          id: string
+          is_favorite: boolean
+          letter_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          archived_at?: string | null
+          created_at?: string
+          id?: string
+          is_favorite?: boolean
+          letter_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          archived_at?: string | null
+          created_at?: string
+          id?: string
+          is_favorite?: boolean
+          letter_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "letter_states_letter_id_fkey"
+            columns: ["letter_id"]
+            isOneToOne: false
+            referencedRelation: "letters"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       letters: {
         Row: {
           author_id: string
           body: string
           created_at: string
           id: string
-          is_archived: boolean
           mood: string | null
+          read_at: string | null
+          recipient_id: string
+          scheduled_for: string | null
+          sent_at: string | null
           space_id: string
+          status: string
           title: string
           updated_at: string
         }
@@ -125,9 +205,13 @@ export type Database = {
           body?: string
           created_at?: string
           id?: string
-          is_archived?: boolean
           mood?: string | null
+          read_at?: string | null
+          recipient_id: string
+          scheduled_for?: string | null
+          sent_at?: string | null
           space_id: string
+          status?: string
           title: string
           updated_at?: string
         }
@@ -136,9 +220,13 @@ export type Database = {
           body?: string
           created_at?: string
           id?: string
-          is_archived?: boolean
           mood?: string | null
+          read_at?: string | null
+          recipient_id?: string
+          scheduled_for?: string | null
+          sent_at?: string | null
           space_id?: string
+          status?: string
           title?: string
           updated_at?: string
         }
@@ -380,6 +468,7 @@ export type Database = {
           description: string | null
           happened_on: string
           id: string
+          letter_id: string | null
           space_id: string
           storage_path: string | null
           title: string
@@ -391,6 +480,7 @@ export type Database = {
           description?: string | null
           happened_on: string
           id?: string
+          letter_id?: string | null
           space_id: string
           storage_path?: string | null
           title: string
@@ -402,12 +492,20 @@ export type Database = {
           description?: string | null
           happened_on?: string
           id?: string
+          letter_id?: string | null
           space_id?: string
           storage_path?: string | null
           title?: string
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "timeline_events_letter_id_fkey"
+            columns: ["letter_id"]
+            isOneToOne: false
+            referencedRelation: "letters"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "timeline_events_space_id_fkey"
             columns: ["space_id"]
@@ -497,11 +595,19 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_read_letter: {
+        Args: { _letter_id: string; _user_id: string }
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
+        Returns: boolean
+      }
+      is_letter_author: {
+        Args: { _letter_id: string; _user_id: string }
         Returns: boolean
       }
       is_space_member: {
