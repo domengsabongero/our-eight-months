@@ -1,13 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { differenceInCalendarDays } from "date-fns";
+import { Mail, PenLine } from "lucide-react";
 
 import { FadeUp } from "@/components/love/FadeUp";
 import { PageShell } from "@/components/keepsake/PageShell";
 import { NAV_ITEMS } from "@/components/keepsake/nav-items";
+import { Button } from "@/components/ui/button";
 import { getKeepsake } from "@/lib/keepsake.functions";
 import { listGallery } from "@/lib/gallery.functions";
+import { getLettersSummary } from "@/lib/letters.functions";
 
 export const Route = createFileRoute("/_authenticated/home")({
   head: () => ({
